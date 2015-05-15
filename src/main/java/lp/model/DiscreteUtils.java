@@ -1,5 +1,6 @@
 package lp.model;
 
+import lp.model.position.Apex;
 import org.jetbrains.annotations.NotNull;
 
 public class DiscreteUtils {

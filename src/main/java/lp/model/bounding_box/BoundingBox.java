@@ -1,10 +1,11 @@
-package lp.model;
+package lp.model.bounding_box;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
 import lp.error.LpDataException;
+import lp.model.position.Apex;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

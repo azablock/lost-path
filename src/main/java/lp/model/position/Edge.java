@@ -1,4 +1,4 @@
-package lp.model;
+package lp.model.position;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;

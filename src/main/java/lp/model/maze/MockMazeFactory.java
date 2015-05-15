@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 
-import static lp.model.BoundingBox.newInstance;
+import static lp.model.bounding_box.BoundingBox.newInstance;
 import static lp.model.DiscreteUtils.pos;
 
 @Component
@@ -17,6 +17,6 @@ public class MockMazeFactory implements MazeFactory {
   @Override
   public Maze newMaze() {
 
-    return new Maze(newInstance(pos(0, 0), pos(10, 12)), new HashSet<>());
+    return new Maze(newInstance(pos(9, 4), pos(22, 12)), new HashSet<>());
   }
 }

@@ -1,8 +1,8 @@
 package lp.model.maze;
 
-import lp.model.BoundingBox;
-import lp.model.Edge;
-import lp.model.HasBoundingBox;
+import lp.model.bounding_box.BoundingBox;
+import lp.model.position.Edge;
+import lp.model.bounding_box.HasBoundingBox;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;

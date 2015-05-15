@@ -1,5 +1,6 @@
 package lp.model;
 
+import lp.model.position.Apex;
 import org.junit.Test;
 
 import static lp.model.DiscreteUtils.*;

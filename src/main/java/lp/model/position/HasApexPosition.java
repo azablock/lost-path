@@ -1,4 +1,4 @@
-package lp.model;
+package lp.model.position;
 
 import org.jetbrains.annotations.NotNull;
 

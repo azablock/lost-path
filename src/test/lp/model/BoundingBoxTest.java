@@ -1,9 +1,11 @@
 package lp.model;
 
 import lp.error.LpDataException;
+import lp.model.bounding_box.BoundingBox;
+import lp.model.position.Apex;
 import org.junit.Test;
 
-import static lp.model.BoundingBox.*;
+import static lp.model.bounding_box.BoundingBox.*;
 import static lp.model.DiscreteUtils.pos;
 import static org.fest.assertions.Assertions.assertThat;
 

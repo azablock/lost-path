@@ -1,10 +1,11 @@
 package lp.model;
 
 import lp.error.LpDataException;
+import lp.model.position.Edge;
 import org.junit.Test;
 
 import static lp.model.DiscreteUtils.pos;
-import static lp.model.Edge.newInstance;
+import static lp.model.position.Edge.newInstance;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class EdgeTest {

@@ -1,4 +1,4 @@
-package lp.model;
+package lp.model.position;
 
 public interface HasPosition {
 

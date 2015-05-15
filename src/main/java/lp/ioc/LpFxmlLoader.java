@@ -13,7 +13,7 @@ public class LpFxmlLoader extends FXMLLoader implements ApplicationContextAware 
 
   public LpFxmlLoader() throws MalformedURLException {
 
-    super(LpFxmlLoader.class.getResource("/lp/ui/RootPane.fxml"));
+    super(LpFxmlLoader.class.getResource("/lp/view_controller/ui/RootPane.fxml"));
   }
 
   @Override
