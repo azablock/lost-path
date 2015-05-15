@@ -1,13 +1,17 @@
 package lp.model.pathfinder.a_star;
 
+import lp.error.LpDataException;
 import lp.model.maze.Maze;
 import lp.model.pathfinder.Pathfinder;
 import lp.model.position.Apex;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import static com.google.common.collect.Collections2.filter;
 import static lp.model.DiscreteUtils.pos;
@@ -16,27 +20,46 @@ import static lp.model.DiscreteUtils.pos;
 @Primary
 public class AStarPathfinder implements Pathfinder {
 
-  @NotNull
-  private final AStarGrid aStarGrid;
+  @Autowired
+  private AStarNodeFactory aStarNodeFactory;
 
   @NotNull
-  private final Apex start;
+  private AStarGrid aStarGrid;
 
   @NotNull
-  private final Apex destination;
+  private Apex start;
 
-  public AStarPathfinder(@NotNull final Apex start, @NotNull final Apex destination, @NotNull final Maze maze) {
-
-    this.start = start;
-    this.destination = destination;
-    aStarGrid = new AStarGrid(maze);
-  }
+  @NotNull
+  private Apex destination;
 
   @NotNull
   @Override
-  public LinkedList<Apex> calculatePath(@NotNull Apex start, @NotNull Apex destination) {
+  public LinkedList<Apex> calculatePath(@NotNull Apex start, @NotNull Apex destination, @NotNull final Maze maze) throws LpDataException {
 
-    return null;
+    aStarGrid = new AStarGrid(maze);
+
+    LinkedList<Apex> path = new LinkedList<>();
+    path.addLast(start);
+
+    if (start.equals(destination))
+      throw new LpDataException("start and destination are at the same position");
+
+    AStarNode startNode = aStarNodeFactory.newNode(start, destination, null);
+    aStarGrid.markAsOpen(startNode);
+    addNeighbourNodes(startNode);
+    aStarGrid.markAsClosed(startNode);
+
+    while (!aStarGrid.getOpenNodes().containsKey(destination)) {
+
+      AStarNode withSmallestOverallCost = getNodeWithSmallestOverallCost();
+      aStarGrid.markAsClosed(withSmallestOverallCost);
+      addNeighbourNodes(withSmallestOverallCost);
+
+    }
+
+    //wypelniam path na koncu
+
+    return path;
   }
 
   private void addNeighbourNodes(@NotNull final AStarNode node) {
@@ -51,17 +74,21 @@ public class AStarPathfinder implements Pathfinder {
     filter(possibleNeighbourNodePositions, apex -> !aStarGrid.getMaze().getBoundingBox().contains(apex)).forEach(
         possibleNeighbourNodePositions::remove);
 
-    Map<Apex, AStarNode> neighboursToAdd = new HashMap<>();
+    filter(possibleNeighbourNodePositions, apex -> !aStarGrid.getOpenNodes().containsKey(apex) && !aStarGrid.getClosedNodes().containsKey(apex))
+        .forEach(apex -> aStarGrid.markAsOpen(aStarNodeFactory.newNode(apex, destination, node.getApexPosition())));
 
-    possibleNeighbourNodePositions.forEach(apex -> neighboursToAdd.put(apex, new AStarTile(calculateHeuristicValue(apex), apex)));
+    /**
+     *@TODO reparent test i spojrzec na te 2 filtry
+     */
 
-    aStarGrid.addToGrid(neighboursToAdd);
   }
 
   @NotNull
-  private Integer calculateHeuristicValue(@NotNull final Apex nodePosition) {
+  private AStarNode getNodeWithSmallestOverallCost() {
 
-    return Math.abs(nodePosition.getX() - destination.getX()) +
-           Math.abs(nodePosition.getY() - destination.getY());
+    LinkedList<AStarNode> nodes = new LinkedList<>(aStarGrid.getOpenNodes().values());
+    nodes.sort(aStarGrid);
+
+    return nodes.getFirst();
   }
 }

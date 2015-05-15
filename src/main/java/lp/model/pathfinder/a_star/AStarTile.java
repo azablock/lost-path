@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static java.lang.String.format;
+import static lp.model.pathfinder.a_star.AStarConstants.*;
 
 public class AStarTile implements AStarNode {
 
@@ -18,20 +19,15 @@ public class AStarTile implements AStarNode {
   private Apex parentPosition;
 
   @NotNull
-  private final Apex position;
+  private final Apex nodePosition;
 
-  public AStarTile(@NotNull Integer heuristicValue, @NotNull final Apex position) {
+  public AStarTile(@NotNull Integer heuristicValue,
+                   @NotNull final Apex nodePosition, @Nullable Apex parentPosition) {
 
     this.heuristicValue = heuristicValue;
-    this.position = position;
-    parentPosition = null;
-    movementCost = 0;
-  }
-
-  @NotNull
-  public Apex getPosition() {
-
-    return position;
+    this.parentPosition = parentPosition;
+    this.nodePosition = nodePosition;
+    movementCost = VER_HOR_MOVEMENT_COST;
   }
 
   @NotNull
@@ -59,13 +55,13 @@ public class AStarTile implements AStarNode {
   @Override
   public Apex getApexPosition() {
 
-    return position;
+    return nodePosition;
   }
 
   @Override
   public String toString() {
 
-    return format("AStarTile{heuristicValue=%d, movementCost=%d, parentPosition=%s, position=%s}",
-                  heuristicValue, movementCost, parentPosition, position);
+    return format("AStarTile{heuristicValue=%d, movementCost=%d, parentPosition=%s, nodePosition=%s}",
+                  heuristicValue, movementCost, parentPosition, nodePosition);
   }
 }
