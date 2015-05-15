@@ -1,8 +1,44 @@
 package lp;
 
-public class Main {
+import javafx.application.Application;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import lp.ioc.LpFxmlLoader;
+import org.slf4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import static javafx.scene.input.KeyCombination.NO_MATCH;
+import static javafx.stage.StageStyle.UNDECORATED;
+import static org.slf4j.LoggerFactory.getLogger;
+
+public class Main extends Application {
+
+  private static final Logger LOG = getLogger(Main.class);
 
   public static void main(String[] args) {
 
+    launch(args);
+  }
+
+  @Override
+  public void start(Stage primaryStage) throws Exception {
+
+    ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/META-INF/spring/lp-spring-context.xml");
+
+    primaryStage.setTitle("lost-path");
+    primaryStage.initStyle(UNDECORATED);
+    primaryStage.centerOnScreen();
+
+    LpFxmlLoader loader = applicationContext.getBean(LpFxmlLoader.class);
+
+    Parent root = loader.load();
+    Scene rootScene = new Scene(root, 1280, 800);
+
+    primaryStage.setFullScreenExitKeyCombination(NO_MATCH);
+    primaryStage.setFullScreen(true);
+    primaryStage.setScene(rootScene);
+    primaryStage.show();
   }
 }
