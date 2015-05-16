@@ -6,12 +6,11 @@ import lp.model.maze.Maze;
 import lp.model.position.Apex;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class AStarGrid implements Iterable<AStarNode>, Comparator<AStarNode> {
+public class AStarGrid implements Iterable<AStarNode> {
 
   @NotNull
   private final Map<Apex, AStarNode> openNodes;
@@ -27,11 +26,6 @@ public class AStarGrid implements Iterable<AStarNode>, Comparator<AStarNode> {
     this.maze = maze;
     openNodes = new HashMap<>();
     closedNodes = new HashMap<>();
-  }
-
-  public void markAllAsOpen(@NotNull final Map<Apex, AStarNode> nodes) {
-
-    openNodes.putAll(nodes);
   }
 
   public void markAsOpen(@NotNull final AStarNode node) {
@@ -57,26 +51,18 @@ public class AStarGrid implements Iterable<AStarNode>, Comparator<AStarNode> {
   @NotNull
   public Map<Apex, AStarNode> getOpenNodes() {
 
-    return ImmutableMap.copyOf(openNodes);
+    return openNodes;
   }
 
   @NotNull
   public Map<Apex, AStarNode> getClosedNodes() {
 
-    return ImmutableMap.copyOf(closedNodes);
+    return closedNodes;
   }
 
   @Override
   public Iterator<AStarNode> iterator() {
 
     return openNodes.values().iterator();
-  }
-
-  @Override
-  public int compare(AStarNode o1, AStarNode o2) {
-
-    int deltaOverallCost = o1.getOverallCost() - o2.getOverallCost();
-
-    return deltaOverallCost < 0 ? o1.getOverallCost() : o2.getOverallCost();
   }
 }

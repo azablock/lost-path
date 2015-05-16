@@ -28,6 +28,12 @@ public class Maze implements HasBoundingBox {
     return boundingBox;
   }
 
+  @NotNull
+  public Set<Edge> getWallPositions() {
+
+    return wallPositions;
+  }
+
   @Override
   public String toString() {
 

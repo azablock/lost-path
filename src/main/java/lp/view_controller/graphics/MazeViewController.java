@@ -4,9 +4,13 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import lp.model.maze.Maze;
+import lp.model.pathfinder.Pathfinder;
 import lp.model.position.Apex;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import static lp.model.DiscreteUtils.pos;
 import static lp.view_controller.graphics.GraphicsConstants.WORLD_FIELD_SIZE;
 
 public class MazeViewController extends Group {

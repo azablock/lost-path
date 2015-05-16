@@ -1,24 +1,89 @@
 package lp.model.pathfinder.a_star;
 
 import lp.model.position.Apex;
-import lp.model.position.HasApexPosition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface AStarNode extends HasApexPosition {
+import static java.lang.String.format;
+
+public class AStarNode implements Comparable<AStarNode> {
 
   @NotNull
-  Integer getHeuristicValue();
+  private final Integer heuristicValue;
 
   @NotNull
-  Integer getMovementCost();
+  private Integer movementCost;
 
   @Nullable
-  Apex getParentPosition();
+  private Apex parentPosition;
 
   @NotNull
-  default Integer getOverallCost() {
+  private final Apex nodePosition;
 
-    return getMovementCost() + getHeuristicValue();
+  public AStarNode(@NotNull Integer heuristicValue, @NotNull final Apex nodePosition, @Nullable Apex parentPosition) {
+
+    this.heuristicValue = heuristicValue;
+    this.parentPosition = parentPosition;
+    this.nodePosition = nodePosition;
+    movementCost = 0;
+  }
+
+  @NotNull
+  public Integer getHeuristicValue() {
+
+    return heuristicValue;
+  }
+
+  public void reparent(@Nullable final Apex parentPosition) {
+
+    this.parentPosition = parentPosition;
+  }
+
+  @NotNull
+  public Integer getMovementCost() {
+
+    return movementCost;
+  }
+
+  public void addMovementCost(@NotNull Integer movementCost) {
+
+    this.movementCost += movementCost;
+  }
+
+  @Nullable
+  public Apex getParentPosition() {
+
+    return parentPosition;
+  }
+
+  @NotNull
+  public Apex getApexPosition() {
+
+    return nodePosition;
+  }
+
+  @NotNull
+  public Integer getOverallCost() {
+
+    return movementCost + heuristicValue;
+  }
+
+  @Override
+  public int compareTo(@NotNull AStarNode o) {
+
+    return this.getOverallCost().compareTo(o.getOverallCost());
+  }
+
+//  @Override
+//  public int compare(AStarNode first, AStarNode second) {
+//
+//    return first.getOverallCost() - second.getOverallCost();
+//  }
+
+  @Override
+  public String toString() {
+
+    return format("AStarTile{heuristicValue=%d, movementCost=%d, parentPosition=%s, nodePosition=%s}\n",
+                  heuristicValue, movementCost, parentPosition, nodePosition);
   }
 }

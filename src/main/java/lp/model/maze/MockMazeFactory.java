@@ -17,6 +17,6 @@ public class MockMazeFactory implements MazeFactory {
   @Override
   public Maze newMaze() {
 
-    return new Maze(newInstance(pos(9, 4), pos(22, 12)), new HashSet<>());
+    return new Maze(newInstance(pos(1, 1), pos(22, 12)), new HashSet<>());
   }
 }

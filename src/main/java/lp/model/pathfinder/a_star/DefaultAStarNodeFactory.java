@@ -14,7 +14,7 @@ public class DefaultAStarNodeFactory implements AStarNodeFactory {
   @Override
   public AStarNode newNode(@NotNull Apex nodePosition, @NotNull Apex destination, @Nullable Apex parentPosition) {
 
-    return new AStarTile(calculateHeuristicValue(nodePosition, destination),
+    return new AStarNode(calculateHeuristicValue(nodePosition, destination),
                          nodePosition, parentPosition);
   }
 
