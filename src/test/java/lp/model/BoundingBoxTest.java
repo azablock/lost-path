@@ -5,8 +5,8 @@ import lp.model.bounding_box.BoundingBox;
 import lp.model.position.Apex;
 import org.junit.Test;
 
-import static lp.model.bounding_box.BoundingBox.*;
 import static lp.model.DiscreteUtils.pos;
+import static lp.model.bounding_box.BoundingBox.newInstance;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class BoundingBoxTest {
@@ -72,13 +72,13 @@ public class BoundingBoxTest {
 
     // given
     BoundingBox bigBoundingBox = newInstance(pos(1, 1), pos(10, 10));
-    Apex coordinates = pos(4, 4);
+    Apex apex = pos(4, 4);
 
     // when
-    Boolean coordinatesContained = bigBoundingBox.contains(coordinates);
+    Boolean apexContained = bigBoundingBox.contains(apex);
 
     // then
-    assertThat(coordinatesContained).isTrue();
+    assertThat(apexContained).isTrue();
   }
 
   @Test
@@ -86,13 +86,13 @@ public class BoundingBoxTest {
 
     // given
     BoundingBox bigBoundingBox = newInstance(pos(1, 1), pos(10, 10));
-    Apex coordinates = pos(14, 4);
+    Apex apex = pos(14, 4);
 
     // when
-    Boolean coordinatesContained = bigBoundingBox.contains(coordinates);
+    Boolean apexContained = bigBoundingBox.contains(apex);
 
     // then
-    assertThat(coordinatesContained).isFalse();
+    assertThat(apexContained).isFalse();
   }
 
   @Test
@@ -100,13 +100,13 @@ public class BoundingBoxTest {
 
     // given
     BoundingBox bigBoundingBox = newInstance(pos(1, 1), pos(10, 10));
-    Apex coordinates = pos(10, 4);
+    Apex apex = pos(9, 4);
 
     // when
-    Boolean coordinatesContained = bigBoundingBox.contains(coordinates);
+    Boolean apexContained = bigBoundingBox.contains(apex);
 
     // then
-    assertThat(coordinatesContained).isTrue();
+    assertThat(apexContained).isTrue();
   }
 
   @Test
@@ -177,5 +177,40 @@ public class BoundingBoxTest {
 
     // then
     assertThat(bigBoxIntersectsSmallBox).isTrue();
+  }
+
+  @Test
+  public void shouldHaveProperBoundingBoxArea() throws Exception {
+
+    //given
+    BoundingBox boundingBox = newInstance(2, 2);
+
+    //when
+    Integer boundingBoxArea = boundingBox.getHeight() * boundingBox.getWidth();
+
+    //then
+    assertThat(boundingBoxArea).isEqualTo(4);
+  }
+
+  @Test
+  public void shouldContainPositionsInsideBoundingBox() throws Exception {
+
+    //given
+    BoundingBox boundingBox = newInstance(pos(0, 0), pos(2, 2));
+
+    //when
+    Apex apex1 = pos(0, 0);
+    Apex apex2 = pos(1, 0);
+    Apex apex3 = pos(0, 1);
+    Apex apex4 = pos(1, 1);
+    Apex apexOutside = pos(2, 1);
+
+    //then
+
+    assertThat(boundingBox.contains(apex1)).isTrue();
+    assertThat(boundingBox.contains(apex2)).isTrue();
+    assertThat(boundingBox.contains(apex3)).isTrue();
+    assertThat(boundingBox.contains(apex4)).isTrue();
+    assertThat(boundingBox.contains(apexOutside)).isFalse();
   }
 }

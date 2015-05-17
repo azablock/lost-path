@@ -18,23 +18,17 @@ import static lp.view_controller.graphics.GraphicsConstants.WORLD_FIELD_SIZE;
 public class MazeViewController extends Group {
 
   @NotNull
-  private final Rectangle mouseMoveRectangle;
-
-  @NotNull
   private final Rectangle mazeBoundingBoxRectangle;
 
   public MazeViewController(@NotNull final Maze maze) {
 
-    mouseMoveRectangle = new Rectangle(WORLD_FIELD_SIZE, WORLD_FIELD_SIZE, Color.RED);
-
     mazeBoundingBoxRectangle = new Rectangle(maze.getBoundingBox().getWidth() * WORLD_FIELD_SIZE,
-                                             maze.getBoundingBox().getHeight() * WORLD_FIELD_SIZE);
+                                             maze.getBoundingBox().getHeight() * WORLD_FIELD_SIZE, new Color(0.95, 0.95, 0.95, 1.0));
 
-    mazeBoundingBoxRectangle.setStroke(Color.GREEN);
+    mazeBoundingBoxRectangle.setStroke(new Color(0.2, 0.2, 0.4, 1.0));
     mazeBoundingBoxRectangle.setStrokeWidth(WORLD_FIELD_SIZE / 10.0);
 
     this.getChildren().add(mazeBoundingBoxRectangle);
-    this.getChildren().add(mouseMoveRectangle);
 
     maze.getWallPositions().forEach(edge -> {
 
@@ -46,18 +40,9 @@ public class MazeViewController extends Group {
                WORLD_FIELD_SIZE * (max(first.getX(), second.getX()) + abs(first.getY() - second.getY())),
                WORLD_FIELD_SIZE * (max(first.getY(), second.getY()) + abs(first.getX() - second.getX())));
 
-      wallLine.setStroke(Color.GREEN);
+      wallLine.setStroke(new Color(0.2, 0.2, 0.4, 1.0));
       wallLine.setStrokeWidth(WORLD_FIELD_SIZE / 10.0);
       this.getChildren().add(wallLine);
-    });
-
-    this.setOnMouseMoved(event -> {
-
-      double quantizedX = ((int) (event.getX() / WORLD_FIELD_SIZE)) * WORLD_FIELD_SIZE;
-      double quantizedY = ((int) (event.getY() / WORLD_FIELD_SIZE)) * WORLD_FIELD_SIZE;
-
-      if (mazeBoundingBoxRectangle.contains(event.getX(), event.getY()))
-        mouseMoveRectangle.relocate(quantizedX, quantizedY);
     });
   }
 }

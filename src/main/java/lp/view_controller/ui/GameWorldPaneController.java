@@ -1,15 +1,19 @@
 package lp.view_controller.ui;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import lp.LpContext;
+import lp.model.UserActor;
 import lp.model.maze.MazeFactory;
 import lp.model.pathfinder.Pathfinder;
+import lp.model.position.Apex;
+import lp.view_controller.Anim8Service;
 import lp.view_controller.graphics.AStarPathViewController;
 import lp.view_controller.graphics.MazeViewController;
+import lp.view_controller.graphics.UserActorViewController;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,6 +35,9 @@ public class GameWorldPaneController implements NodeController {
   private AStarPathViewController aStarPathViewController;
 
   @Autowired
+  private Anim8Service anim8Service;
+
+  @Autowired
   private LpContext lpContext;
 
   @FXML
@@ -45,18 +52,30 @@ public class GameWorldPaneController implements NodeController {
     lpContext.mazeProperty().setValue(mazeFactory.newMaze());
 
     MazeViewController mazeViewController = new MazeViewController(lpContext.mazeProperty().get());
-    mazePane.getChildren().add(mazeViewController);
 
+    UserActorViewController userActorViewController = new UserActorViewController(new UserActor());
+
+    mazePane.getChildren().add(mazeViewController);
     mazePane.getChildren().add(aStarPathViewController);
+    mazePane.getChildren().add(userActorViewController);
 
     mazeViewController.setOnMouseMoved(event -> {
       int discreteX = (int) (event.getX() / WORLD_FIELD_SIZE);
       int discreteY = (int) (event.getY() / WORLD_FIELD_SIZE);
+      Apex discretePos = pos(discreteX, discreteY);
 
-      if (!pos(discreteX, discreteY).equals(pos(0, 0)))
-        aStarPathViewController.pathProperty().setValue(pathfinder.calculatePath(pos(0, 0),
-                                                                                 pos(discreteX, discreteY),
+      if (lpContext.mazeProperty().get().getBoundingBox().contains(discretePos) &&
+          !discretePos.equals(userActorViewController.getUserActor().getApexPosition()))
+        aStarPathViewController.pathProperty().setValue(pathfinder.calculatePath(userActorViewController.getUserActor().getApexPosition(),
+                                                                                 discretePos,
                                                                                  lpContext.mazeProperty().get()));
+    });
+
+    mazeViewController.setOnMouseClicked(event -> anim8Service.pathTransition(userActorViewController, aStarPathViewController.getPathView()).play());
+
+    aStarPathViewController.setOnMouseClicked(event -> {
+      if (aStarPathViewController.getPathView().getLast().contains(new Point2D(event.getX(), event.getY())))
+        anim8Service.pathTransition(userActorViewController, aStarPathViewController.getPathView()).play();
     });
   }
 

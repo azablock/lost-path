@@ -1,14 +1,18 @@
 package lp.view_controller;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.Transition;
+import javafx.animation.*;
 import javafx.scene.Node;
+import javafx.scene.shape.*;
+import javafx.scene.transform.Translate;
 import javafx.util.Duration;
+import lp.model.position.Apex;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.LinkedList;
+import java.util.function.Consumer;
 
 import static javafx.animation.Interpolator.EASE_IN;
 import static javafx.animation.Interpolator.EASE_OUT;
@@ -16,7 +20,11 @@ import static javafx.animation.Interpolator.EASE_OUT;
 @Component
 public class Anim8Service {
 
-  private Double fadeDurationMillis = 200.0;
+  @Value("200.0")
+  private Double fadeDurationMillis;
+
+  @Value("40.0")
+  private Double translateDurationMillis;
 
   private Duration fadeDuration;
 
@@ -37,6 +45,23 @@ public class Anim8Service {
     fadeTransition.setOnFinished(actionEvent -> node.setVisible(nodeVisibleAfterFade));
 
     return fadeTransition;
+  }
+
+  @NotNull
+  public Transition pathTransition(@NotNull final Node node, @NotNull final LinkedList<Circle> shapePath) {
+
+    PathTransition pathTransition = new PathTransition();
+
+    Path translationPath = new Path();
+    translationPath.getElements().add(new MoveTo(shapePath.getFirst().getCenterX(), shapePath.getFirst().getCenterY()));
+
+    shapePath.forEach(shape -> translationPath.getElements().add(new LineTo(shape.getCenterX(), shape.getCenterY())));
+
+    pathTransition.setDuration(Duration.millis(translateDurationMillis * shapePath.size()));
+    pathTransition.setPath(translationPath);
+    pathTransition.setNode(node);
+
+    return pathTransition;
   }
 
   @NotNull

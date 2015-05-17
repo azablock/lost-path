@@ -4,8 +4,6 @@ import lp.model.bounding_box.BoundingBox;
 import lp.model.position.Apex;
 import lp.model.position.Edge;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -15,11 +13,9 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.function.Consumer;
 
 import static com.google.common.collect.Collections2.filter;
 import static lp.model.DiscreteUtils.*;
-import static org.slf4j.LoggerFactory.getLogger;
 
 @Component
 @Primary
@@ -37,8 +33,6 @@ public class PrimMazeFactory implements MazeFactory {
   private Integer maxMazeSize;
 
   private Set<Edge> wallPositions;
-
-  private static final Logger LOG = getLogger(PrimMazeFactory.class);
 
   @NotNull
   @Override
@@ -59,14 +53,9 @@ public class PrimMazeFactory implements MazeFactory {
         wallGrid.remove(randomWallPosition);
 
         addNeighbourWalls(oppositeSideNodePosition);
-      }
-
-      else
+      } else
         wallPositions.remove(randomWallPosition);
     }
-
-
-    wallGrid.forEach(edge -> LOG.debug(String.valueOf(edge)));
 
     return new Maze(BoundingBox.newInstance(mazeWidth, mazeHeight), wallGrid);
   }
@@ -111,11 +100,8 @@ public class PrimMazeFactory implements MazeFactory {
     wallPositions = new HashSet<>();
 
     Random random = new Random();
-//    mazeWidth = random.nextInt(maxMazeSize) + 5;
-//    mazeHeight = random.nextInt(maxMazeSize) + 5;
-
-    mazeWidth = 3;
-    mazeHeight = 5;
+    mazeWidth = random.nextInt(maxMazeSize) + 35;
+    mazeHeight = random.nextInt(maxMazeSize) + 35;
 
     for (int y = 0; y < mazeHeight; y++)
       for (int x = 0; x < mazeWidth - 1; x++)

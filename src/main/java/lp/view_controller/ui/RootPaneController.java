@@ -34,8 +34,6 @@ public class RootPaneController {
   @FXML
   private GridPane rootPane;
 
-  private static final Logger LOG = LoggerFactory.getLogger(RootPaneController.class);
-
   @FXML
   public void initialize() {
 
@@ -44,7 +42,6 @@ public class RootPaneController {
       NodeController currentController = getNodeController(currentUIState);
       NodeController newController = getNodeController(newUIState);
 
-      LOG.debug("currentUIState: " + currentUIState + "\tnewUIState: " + newUIState);
       anim8Service.fadeChainSwap(currentController.getNode(), newController.getNode()).play();
     });
   }

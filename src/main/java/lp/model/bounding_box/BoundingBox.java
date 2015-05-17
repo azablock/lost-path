@@ -73,10 +73,10 @@ public class BoundingBox implements Iterable<Apex> {
   }
 
   @NotNull
-  public Boolean contains(@NotNull Apex coordinates) {
+  public Boolean contains(@NotNull Apex apex) {
 
-    return horizontalRange().contains(coordinates.getX()) &&
-           verticalRange().contains(coordinates.getY());
+    return horizontalRange().contains(apex.getX()) &&
+           verticalRange().contains(apex.getY());
   }
 
   @NotNull
@@ -106,12 +106,12 @@ public class BoundingBox implements Iterable<Apex> {
 
   private Range<Integer> horizontalRange() {
 
-    return Range.closed(topLeft.getX(), bottomRight.getX());
+    return Range.closedOpen(topLeft.getX(), bottomRight.getX());
   }
 
   private Range<Integer> verticalRange() {
 
-    return Range.closed(topLeft.getY(), bottomRight.getY());
+    return Range.closedOpen(topLeft.getY(), bottomRight.getY());
   }
 
   @Override
@@ -138,13 +138,13 @@ public class BoundingBox implements Iterable<Apex> {
     Iterable<Integer> horizontal = ContiguousSet.create(horizontalRange(), DiscreteDomain.integers());
     Iterable<Integer> vertical = ContiguousSet.create(verticalRange(), DiscreteDomain.integers());
 
-    List<Apex> containedCoordinates = new ArrayList<>();
+    List<Apex> containedApexes = new ArrayList<>();
 
     for (Integer x : horizontal)
       for (Integer y : vertical)
-        containedCoordinates.add(pos(x, y));
+        containedApexes.add(pos(x, y));
 
-    return containedCoordinates.iterator();
+    return containedApexes.iterator();
   }
 
   @Override

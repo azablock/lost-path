@@ -8,12 +8,12 @@ import org.jetbrains.annotations.NotNull;
 
 import static lp.model.DiscreteUtils.*;
 
-public class PlayerActor implements HasApexPosition {
+public class UserActor implements HasApexPosition {
 
   @NotNull
   private final ObjectProperty<Apex> apexPosition;
 
-  public PlayerActor() {
+  public UserActor() {
 
     apexPosition = new SimpleObjectProperty<>(pos(0, 0));
   }
@@ -30,4 +30,11 @@ public class PlayerActor implements HasApexPosition {
 
     return apexPosition.get();
   }
+
+  @Override
+  public String toString() {
+
+    return String.format("UserActor{apexPosition=%s}", apexPosition);
+  }
+
 }
