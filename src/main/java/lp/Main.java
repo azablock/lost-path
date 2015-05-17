@@ -1,8 +1,10 @@
 package lp;
 
 import javafx.application.Application;
+import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lp.ioc.LpFxmlLoader;
 import org.springframework.context.ApplicationContext;
@@ -28,9 +30,7 @@ public class Main extends Application {
     Parent root = loader.load();
     Scene rootScene = new Scene(root, 1280, 800);
     rootScene.getStylesheets().add("lp/skins/lost-path-default.css");
-
-
-    //    scene.setCursor(new ImageCursor(new Image("monolith/images/monolithCursor.png")));
+    rootScene.setCursor(new ImageCursor(new Image("lp/images/lost-path-cursor.png")));
 
     primaryStage.setTitle("lost-path");
     primaryStage.initStyle(UNDECORATED);
