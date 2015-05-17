@@ -2,7 +2,7 @@ package lp.model.position;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface HasApexPosition extends HasPosition {
+public interface HasApexPosition {
 
   @NotNull
   Apex getApexPosition();
