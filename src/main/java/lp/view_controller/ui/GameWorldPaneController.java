@@ -1,26 +1,20 @@
 package lp.view_controller.ui;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import lp.LpContext;
-import lp.model.UserActor;
 import lp.model.maze.MazeFactory;
 import lp.model.pathfinder.Pathfinder;
-import lp.model.position.Apex;
 import lp.view_controller.Anim8Service;
 import lp.view_controller.graphics.AStarPathViewController;
-import lp.view_controller.graphics.MazeViewController;
-import lp.view_controller.graphics.UserActorViewController;
+import lp.view_controller.graphics.MazeController;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static lp.LpUIState.MENU;
-import static lp.model.DiscreteUtils.pos;
-import static lp.view_controller.graphics.GraphicsConstants.WORLD_FIELD_SIZE;
 
 @Component
 public class GameWorldPaneController implements NodeController {
@@ -38,44 +32,42 @@ public class GameWorldPaneController implements NodeController {
   private Anim8Service anim8Service;
 
   @Autowired
+  private MazeController mazeController;
+
+  @Autowired
   private LpContext lpContext;
 
   @FXML
-  private GridPane gameWorldPane;
+  private Pane gameWorldPane;
 
   @FXML
   private Pane mazePane;
 
   @FXML
+  private TextField primGenerationTimeTextField;
+
+  @FXML
+  private TextField aStarTextField;
+
+  @FXML
+  private TextField aStarPathLengthTextField;
+
+  @FXML
   public void initialize() {
 
-    lpContext.mazeProperty().setValue(mazeFactory.newMaze());
-
-    MazeViewController mazeViewController = new MazeViewController(lpContext.mazeProperty().get());
-
-    UserActorViewController userActorViewController = new UserActorViewController(new UserActor());
-
-    mazePane.getChildren().add(mazeViewController);
+    mazePane.getChildren().add(mazeController);
     mazePane.getChildren().add(aStarPathViewController);
-    mazePane.getChildren().add(userActorViewController);
+    mazePane.getChildren().add(mazeController.getUserActorViewController());
 
-    mazeViewController.setOnMouseMoved(event -> {
-      int discreteX = (int) (event.getX() / WORLD_FIELD_SIZE);
-      int discreteY = (int) (event.getY() / WORLD_FIELD_SIZE);
-      Apex discretePos = pos(discreteX, discreteY);
+    mazePane.setOnMouseClicked(mazeController::handle);
+    mazePane.setOnMouseMoved(mazeController::handle);
 
-      if (lpContext.mazeProperty().get().getBoundingBox().contains(discretePos) &&
-          !discretePos.equals(userActorViewController.getUserActor().getApexPosition()))
-        aStarPathViewController.pathProperty().setValue(pathfinder.calculatePath(userActorViewController.getUserActor().getApexPosition(),
-                                                                                 discretePos,
-                                                                                 lpContext.mazeProperty().get()));
-    });
+    primGenerationTimeTextField.setText("Prim generation: " + lpContext.getPrimTimeMillis() + " ms");
 
-    mazeViewController.setOnMouseClicked(event -> anim8Service.pathTransition(userActorViewController, aStarPathViewController.getPathView()).play());
+    aStarPathViewController.pathProperty().addListener((observable, oldPath, newPath) -> {
 
-    aStarPathViewController.setOnMouseClicked(event -> {
-      if (aStarPathViewController.getPathView().getLast().contains(new Point2D(event.getX(), event.getY())))
-        anim8Service.pathTransition(userActorViewController, aStarPathViewController.getPathView()).play();
+      aStarTextField.setText("A* pathfinding: " + lpContext.getAStarTimeMillis() + " ms");
+      aStarPathLengthTextField.setText("A* path length: " + newPath.size());
     });
   }
 

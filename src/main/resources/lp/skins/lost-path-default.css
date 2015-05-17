@@ -1,0 +1,28 @@
+.root {
+    -fx-font-family: "Bitwise";
+    -fx-font-size: 18px;
+    -fx-base: #1B1B1B;
+    -fx-background: #1E1E1E;
+    -fx-focus-color: #FFFFFF;
+    -fx-control-inner-background: #252C40;
+    -fx-inner-border: linear-gradient(to bottom, derive(-fx-color,57.64516129032258%) 0%, derive(-fx-color,-6.0%) 100%);
+    -fx-body-color: linear-gradient( to bottom, derive(-fx-color, 35.0%) 0%, derive(-fx-color, -6.0%) 100%);
+    -fx-shadow-highlight-color: derive(-fx-background,-100.0%);
+    -fx-text-box-border: derive(-fx-background,-27.457627118644083%);
+}
+.button, .toggle-button, .choice-box {
+    -fx-padding: 4px 11px 4px 11px;
+}
+
+.label {
+    -fx-padding: 4px 19px 4px 11px;
+}
+
+.text-field {
+    -fx-padding: 4px 7px 4px 7px;
+    -fx-font-size: 12;
+}
+
+.menu-label {
+    -fx-font-size: 30;
+}

@@ -1,20 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.*?>
-
-<GridPane fx:id="gameWorldPane" alignment="CENTER" prefHeight="800.0" prefWidth="1280.0" visible="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lp.view_controller.ui.GameWorldPaneController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints maxHeight="655.0" minHeight="10.0" prefHeight="655.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="195.0" minHeight="0.0" prefHeight="103.0" vgrow="SOMETIMES" />
-  </rowConstraints>
+<Pane fx:id="gameWorldPane" prefHeight="800.0" prefWidth="1280.0" visible="false" xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="lp.view_controller.ui.GameWorldPaneController">
   <children>
-    <Button fx:id="backToMenuButton" mnemonicParsing="false" onMouseClicked="#onBackToMenuClicked" text="Back To Menu" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-    <Pane fx:id="mazePane" prefHeight="800.0" prefWidth="1280.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <GridPane prefHeight="800.0" prefWidth="1280.0">
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1090.0" minWidth="10.0" prefWidth="1090.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="629.0" minWidth="10.0" prefWidth="190.0"/>
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+      </rowConstraints>
+      <children>
+        <Pane fx:id="mazePane"/>
+        <GridPane GridPane.columnIndex="1">
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+          </rowConstraints>
+          <children>
+            <TextField fx:id="aStarTextField" alignment="CENTER" editable="false" focusTraversable="false" prefHeight="50.0" prefWidth="130.0"
+                       GridPane.rowIndex="1"/>
+            <Button alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onBackToMenuClicked" prefHeight="40.0" prefWidth="200.0"
+                    text="Back To Menu" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER"/>
+            <TextField fx:id="primGenerationTimeTextField" alignment="CENTER" editable="false" focusTraversable="false" prefHeight="50.0"
+                       prefWidth="130.0"/>
+            <TextField fx:id="aStarPathLengthTextField" alignment="CENTER" editable="false" focusTraversable="false" prefHeight="50.0"
+                       prefWidth="130.0" GridPane.rowIndex="2"/>
+          </children>
+        </GridPane>
+      </children>
+    </GridPane>
   </children>
-</GridPane>
+</Pane>

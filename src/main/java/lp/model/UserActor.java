@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import lp.model.position.Apex;
 import lp.model.position.HasApexPosition;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 
 import static lp.model.DiscreteUtils.*;
 

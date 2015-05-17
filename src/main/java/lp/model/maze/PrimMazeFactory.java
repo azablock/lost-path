@@ -1,12 +1,15 @@
 package lp.model.maze;
 
+import lp.LpContext;
 import lp.model.bounding_box.BoundingBox;
 import lp.model.position.Apex;
 import lp.model.position.Edge;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,6 +24,9 @@ import static lp.model.DiscreteUtils.*;
 @Primary
 public class PrimMazeFactory implements MazeFactory {
 
+  @Autowired
+  private LpContext lpContext;
+
   private Set<Edge> wallGrid;
 
   private Set<Apex> usedNodePositions;
@@ -29,14 +35,17 @@ public class PrimMazeFactory implements MazeFactory {
 
   private Integer mazeHeight;
 
-  @Value("5")
-  private Integer maxMazeSize;
+  @Value("20")
+  private Integer minMazeSize;
 
   private Set<Edge> wallPositions;
 
   @NotNull
   @Override
   public Maze newMaze() {
+
+    StopWatch stopWatch = new StopWatch();
+    stopWatch.start();
 
     initializePrimGrid();
     Apex randomNotUsedNodePosition = pickRandomNotUsedNodePosition();
@@ -56,6 +65,9 @@ public class PrimMazeFactory implements MazeFactory {
       } else
         wallPositions.remove(randomWallPosition);
     }
+
+    stopWatch.stop();
+    lpContext.setPrimTimeMillis(stopWatch.getTotalTimeMillis());
 
     return new Maze(BoundingBox.newInstance(mazeWidth, mazeHeight), wallGrid);
   }
@@ -100,8 +112,8 @@ public class PrimMazeFactory implements MazeFactory {
     wallPositions = new HashSet<>();
 
     Random random = new Random();
-    mazeWidth = random.nextInt(maxMazeSize) + 35;
-    mazeHeight = random.nextInt(maxMazeSize) + 35;
+    mazeWidth = random.nextInt(minMazeSize) + 60;
+    mazeHeight = random.nextInt(minMazeSize) + 50;
 
     for (int y = 0; y < mazeHeight; y++)
       for (int x = 0; x < mazeWidth - 1; x++)

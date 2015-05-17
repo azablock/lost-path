@@ -23,15 +23,18 @@ public class Main extends Application {
 
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/META-INF/spring/lp-spring-context.xml");
 
-    primaryStage.setTitle("lost-path");
-    primaryStage.initStyle(UNDECORATED);
-    primaryStage.centerOnScreen();
-
     LpFxmlLoader loader = applicationContext.getBean(LpFxmlLoader.class);
 
     Parent root = loader.load();
     Scene rootScene = new Scene(root, 1280, 800);
+    rootScene.getStylesheets().add("lp/skins/lost-path-default.css");
 
+
+    //    scene.setCursor(new ImageCursor(new Image("monolith/images/monolithCursor.png")));
+
+    primaryStage.setTitle("lost-path");
+    primaryStage.initStyle(UNDECORATED);
+    primaryStage.centerOnScreen();
     primaryStage.setFullScreenExitKeyCombination(NO_MATCH);
     primaryStage.setFullScreen(true);
     primaryStage.setScene(rootScene);

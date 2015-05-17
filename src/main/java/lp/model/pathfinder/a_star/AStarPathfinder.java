@@ -1,5 +1,6 @@
 package lp.model.pathfinder.a_star;
 
+import lp.LpContext;
 import lp.error.LpDataException;
 import lp.model.maze.Maze;
 import lp.model.pathfinder.Pathfinder;
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -26,6 +28,9 @@ public class AStarPathfinder implements Pathfinder {
   @Autowired
   private AStarNodeFactory aStarNodeFactory;
 
+  @Autowired
+  private LpContext lpContext;
+
   private AStarGrid aStarGrid;
 
   private Apex destination;
@@ -37,6 +42,9 @@ public class AStarPathfinder implements Pathfinder {
   public LinkedList<Apex> calculatePath(@NotNull final Apex start,
                                         @NotNull final Apex destination,
                                         @NotNull final Maze maze) throws LpDataException {
+
+    StopWatch stopWatch = new StopWatch();
+    stopWatch.start();
 
     aStarGrid = new AStarGrid(maze);
     this.destination = destination;
@@ -78,6 +86,9 @@ public class AStarPathfinder implements Pathfinder {
     }
 
     path.addFirst(currentPositionInPath);
+
+    stopWatch.stop();
+    lpContext.setAStarTimeMillis(stopWatch.getTotalTimeMillis());
 
     return path;
   }

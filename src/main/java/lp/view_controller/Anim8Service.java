@@ -23,7 +23,7 @@ public class Anim8Service {
   @Value("200.0")
   private Double fadeDurationMillis;
 
-  @Value("40.0")
+  @Value("70.0")
   private Double translateDurationMillis;
 
   private Duration fadeDuration;

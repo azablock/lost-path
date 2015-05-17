@@ -24,12 +24,10 @@ public class UserActorViewController extends Group {
                                  Color.BLACK));
 
     translateXProperty().addListener((observable, oldTranslateX, newTranslateX) -> {
-
       userActor.apexPositionProperty().setValue(pos((int) ((double) newTranslateX / WORLD_FIELD_SIZE), userActor.getY()));
     });
 
     translateYProperty().addListener((observable, oldTranslateY, newTranslateY) -> {
-
       userActor.apexPositionProperty().setValue(pos(userActor.getX(), (int) ((double) newTranslateY / WORLD_FIELD_SIZE)));
     });
   }

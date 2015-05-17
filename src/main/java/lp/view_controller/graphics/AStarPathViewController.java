@@ -22,14 +22,10 @@ public class AStarPathViewController extends Group {
   @NotNull
   private final LinkedList<Circle> pathView;
 
-  @NotNull
-  private final ObjectProperty<Circle> currentPathViewPoint;
-
   public AStarPathViewController() {
 
     path = new SimpleObjectProperty<>();
     pathView = new LinkedList<>();
-    currentPathViewPoint = new SimpleObjectProperty<>();
 
     path.addListener((observable, oldPath, newPath) -> {
 
@@ -39,10 +35,10 @@ public class AStarPathViewController extends Group {
       newPath.forEach(apex -> pathView.addLast(new Circle(apex.getX() * WORLD_FIELD_SIZE + WORLD_FIELD_SIZE / 2,
                                                           apex.getY() * WORLD_FIELD_SIZE + WORLD_FIELD_SIZE / 2,
                                                           WORLD_FIELD_SIZE / 4,
-                                                          new Color(0.5,
-                                                                    0.2,
+                                                          new Color(0.6,
+                                                                    0.25,
                                                                     1.0 - newPath.indexOf(apex) * (1.0 / newPath.size()),
-                                                                    newPath.indexOf(apex) * (1.0 / newPath.size())))));
+                                                                    0.10 + 0.90 * (newPath.indexOf(apex) * (1.0 / newPath.size()))))));
 
       getChildren().addAll(pathView);
     });
@@ -52,12 +48,6 @@ public class AStarPathViewController extends Group {
   public LinkedList<Circle> getPathView() {
 
     return pathView;
-  }
-
-  @NotNull
-  public ObjectProperty<Circle> currentPathViewPointProperty() {
-
-    return currentPathViewPoint;
   }
 
   @NotNull
