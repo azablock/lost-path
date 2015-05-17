@@ -1,6 +1,5 @@
 package lp.model.pathfinder.a_star;
 
-import com.google.common.collect.ImmutableMap;
 import lp.error.LpDataException;
 import lp.model.maze.Maze;
 import lp.model.position.Apex;

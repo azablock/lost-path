@@ -1,7 +1,6 @@
 package lp.model.pathfinder.a_star;
 
 import lp.model.maze.Maze;
-import lp.model.maze.MazeFactory;
 import lp.model.maze.MockMazeFactory;
 import lp.model.pathfinder.Pathfinder;
 import lp.model.position.Apex;

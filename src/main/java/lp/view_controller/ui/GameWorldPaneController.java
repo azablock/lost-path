@@ -2,6 +2,7 @@ package lp.view_controller.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import lp.LpContext;
@@ -33,7 +34,7 @@ public class GameWorldPaneController implements NodeController {
   private LpContext lpContext;
 
   @FXML
-  private StackPane gameWorldPane;
+  private GridPane gameWorldPane;
 
   @FXML
   private Pane mazePane;
@@ -46,15 +47,16 @@ public class GameWorldPaneController implements NodeController {
     MazeViewController mazeViewController = new MazeViewController(lpContext.mazeProperty().get());
     mazePane.getChildren().add(mazeViewController);
 
-
     mazePane.getChildren().add(aStarPathViewController);
 
-    mazePane.setOnMouseClicked(event -> {
+    mazeViewController.setOnMouseMoved(event -> {
       int discreteX = (int) (event.getX() / WORLD_FIELD_SIZE);
       int discreteY = (int) (event.getY() / WORLD_FIELD_SIZE);
-      aStarPathViewController.pathProperty().setValue(pathfinder.calculatePath(pos(2, 2),
-                                                                               pos(discreteX, discreteY),
-                                                                               lpContext.mazeProperty().get()));
+
+      if (!pos(discreteX, discreteY).equals(pos(0, 0)))
+        aStarPathViewController.pathProperty().setValue(pathfinder.calculatePath(pos(0, 0),
+                                                                                 pos(discreteX, discreteY),
+                                                                                 lpContext.mazeProperty().get()));
     });
   }
 
@@ -62,11 +64,6 @@ public class GameWorldPaneController implements NodeController {
   public void onBackToMenuClicked() {
 
     lpContext.lpUIStateProperty().setValue(MENU);
-  }
-
-  public Pane getMazePane() {
-
-    return mazePane;
   }
 
   @NotNull

@@ -10,7 +10,6 @@ import static lp.model.bounding_box.BoundingBox.newInstance;
 import static lp.model.DiscreteUtils.pos;
 
 @Component
-@Primary
 public class MockMazeFactory implements MazeFactory {
 
   @NotNull

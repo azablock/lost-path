@@ -34,7 +34,9 @@ public class AStarPathfinder implements Pathfinder {
 
   @NotNull
   @Override
-  public LinkedList<Apex> calculatePath(@NotNull final Apex start, @NotNull final Apex destination, @NotNull final Maze maze) throws LpDataException {
+  public LinkedList<Apex> calculatePath(@NotNull final Apex start,
+                                        @NotNull final Apex destination,
+                                        @NotNull final Maze maze) throws LpDataException {
 
     aStarGrid = new AStarGrid(maze);
     this.destination = destination;
@@ -75,7 +77,7 @@ public class AStarPathfinder implements Pathfinder {
       currentPositionInPath = currentNode.getApexPosition();
     }
 
-    path.addFirst(currentPositionInPath); // add start
+    path.addFirst(currentPositionInPath);
 
     return path;
   }

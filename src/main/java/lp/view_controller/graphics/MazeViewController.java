@@ -2,15 +2,17 @@ package lp.view_controller.graphics;
 
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import lp.model.maze.Maze;
-import lp.model.pathfinder.Pathfinder;
 import lp.model.position.Apex;
+import lp.model.position.Edge;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
+import static java.lang.Math.*;
 import static lp.model.DiscreteUtils.pos;
+import static lp.model.DiscreteUtils.withEastOf;
+import static lp.model.DiscreteUtils.withSouthOf;
 import static lp.view_controller.graphics.GraphicsConstants.WORLD_FIELD_SIZE;
 
 public class MazeViewController extends Group {
@@ -25,14 +27,29 @@ public class MazeViewController extends Group {
 
     mouseMoveRectangle = new Rectangle(WORLD_FIELD_SIZE, WORLD_FIELD_SIZE, Color.RED);
 
-    Apex topLeft = maze.getBoundingBox().getTopLeft();
-    mazeBoundingBoxRectangle = new Rectangle(topLeft.getX() * WORLD_FIELD_SIZE,
-                                             topLeft.getY() * WORLD_FIELD_SIZE,
-                                             maze.getBoundingBox().getWidth() * WORLD_FIELD_SIZE,
+    mazeBoundingBoxRectangle = new Rectangle(maze.getBoundingBox().getWidth() * WORLD_FIELD_SIZE,
                                              maze.getBoundingBox().getHeight() * WORLD_FIELD_SIZE);
+
+    mazeBoundingBoxRectangle.setStroke(Color.GREEN);
+    mazeBoundingBoxRectangle.setStrokeWidth(WORLD_FIELD_SIZE / 10.0);
 
     this.getChildren().add(mazeBoundingBoxRectangle);
     this.getChildren().add(mouseMoveRectangle);
+
+    maze.getWallPositions().forEach(edge -> {
+
+      Apex first = edge.getFirst();
+      Apex second = edge.getSecond();
+
+      Line wallLine = new Line(WORLD_FIELD_SIZE * (max(first.getX(), second.getX())),
+               WORLD_FIELD_SIZE * (max(first.getY(), second.getY())),
+               WORLD_FIELD_SIZE * (max(first.getX(), second.getX()) + abs(first.getY() - second.getY())),
+               WORLD_FIELD_SIZE * (max(first.getY(), second.getY()) + abs(first.getX() - second.getX())));
+
+      wallLine.setStroke(Color.GREEN);
+      wallLine.setStrokeWidth(WORLD_FIELD_SIZE / 10.0);
+      this.getChildren().add(wallLine);
+    });
 
     this.setOnMouseMoved(event -> {
 
